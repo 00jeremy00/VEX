@@ -1,0 +1,21 @@
+#include "robot-config.h"
+void altDrive(){
+    Controller1.rumble("...---.");
+    LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
+    RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
+}
+void printAxisPosition(){
+    Brain.Screen.print("Axis 1: "+ std::string(Controller1.Axis1.value()));
+    Brain.Screen.print("Axis 3: "+ std::string(Controller1.Axis3.value()));
+}
+int main() {
+    LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
+    RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
+    while(true){
+        LMotor.spin(directionType::fwd);       
+        RMotor.spin(directionType::fwd);
+        Controller1.ButtonLeft.pressed(altDrive);
+        Controller1.Axis1.changed(printAxisPosition);
+        Controller1.Axis3.changed(printAxisPosition);
+    }
+}

@@ -1,21 +1,21 @@
 #include "robot-config.h"
-void altDrive(){
-    Controller1.rumble("...---.");
-    LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
-    RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
-}
-void printAxisPosition(){
-    Brain.Screen.print("Axis 1: "+ std::string(Controller1.Axis1.value()));
-    Brain.Screen.print("Axis 3: "+ std::string(Controller1.Axis3.value()));
+void printAxes(){ //Prints the values of the joystick axes as a test
+    Brain.Screen.print(Controller1.Axis1.value());
+    Controller1.Screen.newLine();
+    Brain.Screen.print(Controller1.Axis3.value());
 }
 int main() {
-    LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
-    RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
     while(true){
+        LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
+        RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
         LMotor.spin(directionType::fwd);       
         RMotor.spin(directionType::fwd);
-        Controller1.ButtonLeft.pressed(altDrive);
-        Controller1.Axis1.changed(printAxisPosition);
-        Controller1.Axis3.changed(printAxisPosition);
+        Controller1.Axis1.changed(printAxes);
+        if(Controller1.ButtonDown.pressing()){//does a 180 degree turn
+            LMotor.stop();
+            RMotor.stop();
+            LMotor.rotateTo(1,rotationUnits::rev,100,velocityUnits::pct);
+            RMotor.rotateTo(-1,rotationUnits::rev,100,velocityUnits::pct);
+        }
     }
 }

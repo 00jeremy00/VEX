@@ -6,10 +6,8 @@ void printAxes(){ //Prints the values of the joystick axes as a test
 }
 int main() {
     while(true){
-        LMotor.setVelocity(Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);
-        RMotor.setVelocity(Controller1.Axis3.position(percentUnits::pct),velocityUnits::pct);
-        LMotor.spin(directionType::fwd);       
-        RMotor.spin(directionType::fwd);
+        LMotor.spin(directionType::fwd,Controller1.Axis1.position(percentUnits::pct),velocityUnits::pct);       
+        RMotor.spin(directionType::fwdController1.Axis3.position(percentUnits::pct),velocityUnits::pct);
         Controller1.Axis1.changed(printAxes);
         if(Controller1.ButtonDown.pressing()){//does a 180 degree turn
             LMotor.stop();

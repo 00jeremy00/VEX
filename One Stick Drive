@@ -1,4 +1,4 @@
-#include "robot-config.h"\\If it is turning too much DIVIDE the variable axisVert by a number(maybe 2) to get it turn turn less
+#include "robot-config.h"//If it is turning too much DIVIDE the variable axisVert by a number(maybe 2) to get it turn turn less
 //There might be too many subtelites in one joystick driving to work properly
 void printAxes(){ //Prints the values of the joystick axes as a test
     Brain.Screen.clearScreen();
@@ -11,7 +11,7 @@ void stopMotors(){
     RMotor.stop();
 }
 void setVelocity(){
-    int axisHor = Controller1.Axis4.value();
+    int axisHor = Controller1.Axis4.value();//Divide by number(2?) here if turns are two affected by Horizontal Axis
     int axisVert = Controller1.Axis3.value();
     if(axisHor != abs(axisHor)){//if the stick is pushed left to turn left
         RMotor.spin(directionType::fwd,axisVert,percentUnits::pct);

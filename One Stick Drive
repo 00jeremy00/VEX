@@ -1,38 +1,32 @@
-#include "robot-config.h"//If it is turning too much DIVIDE the variable axisVert by a number(maybe 2) to get it turn turn less
-//There might be too many subtelites in one joystick driving to work properly
-void printAxes(){ //Prints the values of the joystick axes as a test
-    Brain.Screen.clearScreen();
-    Brain.Screen.print(Controller1.Axis3.value());
-    Controller1.Screen.newLine();
-    Brain.Screen.print(Controller1.Axis2.value());
-}
+#include "robot-config.h"
 void stopMotors(){
     LMotor.stop();
     RMotor.stop();
 }
 void setVelocity(){
-    int axisHor = Controller1.Axis4.value();//Divide by number(2?) here if turns are two affected by Horizontal Axis
+    int axisHor = Controller1.Axis4.value();//Divide this number by increasing numbers to reduce the sensetivity for turns
     int axisVert = Controller1.Axis3.value();
     if(axisHor != abs(axisHor)){//if the stick is pushed left to turn left
         RMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
-        int leftVelocity = (axisVert-axisHor);//Negative - Negative = Negative + Positive
+        int otherVelocity = (axisVert-axisHor);//Negative - Negative = Negative + Positive
         if(axisVert == abs(axisVert)){
-            int leftVelocity = axisVert+axisHor;//Negative+positive
+            Brain.Screen.print("???????????????????????????????????????");
+            int otherVelocity = axisVert+axisHor;//Negative+positive
         }
-        LMotor.spin(directionType::fwd,leftVelocity,percentUnits::pct);
+        LMotor.spin(directionType::fwd,otherVelocity,percentUnits::pct);
         }
     else if (axisHor == abs(axisHor)){//stick is pushed right or in the horizontal center
         LMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
-        int rightVelocity = (axisVert-axisHor);//Positive minus Positive
+        int otherVelocity = (axisVert-axisHor);//Positive minus Positive
         if(axisVert != abs(axisVert)){
-            int rightVelocity = (axisVert+axisHor);//Positive + Negative
+            Brain.Screen.print("-----------------------------------");
+            int otherVelocity = (axisVert+axisHor);//Positive + Negative
             }
-        LMotor.spin(directionType::fwd,rightVelocity,percentUnits::pct);
+        LMotor.spin(directionType::fwd,otherVelocity,percentUnits::pct);
     }
     else{
         stopMotors();
     }
-    
 }
 int main() {
     while(true){

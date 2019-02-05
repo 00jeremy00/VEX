@@ -14,26 +14,31 @@ void setVelocity(){
     int axisVert = Controller1.Axis3.value();
     if(axisHor != abs(axisHor)){//if the stick is pushed left to turn left
         RMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
-        int leftVelocity = (axisVert+axisHor);
-        if(leftVelocity < -100){
-            int leftVelocity = -100;
+        int leftVelocity = (axisVert-axisHor);//Negative minus negative is plus positive
+        if(axisVert == abs(axisVert)){
+            int leftVelocity = axisVert+axisHor;//Negative+positive
         }
         LMotor.spin(directionType::fwd,leftVelocity,percentUnits::pct);
         }
-    else{//stick is pushed right or in the horizontal center
+    else if (axisHor == abs(axisHor)){//stick is pushed right or in the horizontal center
         LMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
-        int leftVelocity = (axisVert+axisHor);
-        if(leftVelocity > 100){
-            int leftVelocity = 100;
+        int rightVelocity = (axisVert-axisHor);//Positive minus Positive
+        if(axisVert != abs(axisVert)){
+            int rightVelocity = (axisVert+axisHor);//Positive + Negative
             }
-        LMotor.spin(directionType::fwd,leftVelocity,percentUnits::pct);
+        LMotor.spin(directionType::fwd,rightVelocity,percentUnits::pct);
     }
+    else{
+        stopMotors();
+    }
+    
 }
 int main() {
     while(true){
         Brain.Screen.print(Brain.Battery.capacity(percentUnits::pct));
         Controller1.Axis3.changed(setVelocity);
         Controller1.Axis2.changed(setVelocity);
+        Controller1.ButtonB.pressed(stopMotors);
         if(Controller1.ButtonDown.pressing()){//does a 180 degree turn
             stopMotors();
             LMotor.rotateTo(1,rotationUnits::rev,100,velocityUnits::pct);

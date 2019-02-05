@@ -30,7 +30,6 @@ void setVelocity(){
 }
 int main() {
     while(true){
-        Brain.Screen.print(Brain.Battery.capacity(percentUnits::pct));
         Controller1.Axis3.changed(setVelocity);
         Controller1.Axis2.changed(setVelocity);
         Controller1.ButtonB.pressed(stopMotors);

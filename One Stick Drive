@@ -1,0 +1,44 @@
+#include "robot-config.h"
+void printAxes(){ //Prints the values of the joystick axes as a test
+    Brain.Screen.clearScreen();
+    Brain.Screen.print(Controller1.Axis3.value());
+    Controller1.Screen.newLine();
+    Brain.Screen.print(Controller1.Axis2.value());
+}
+void stopMotors(){
+    LMotor.stop();
+    RMotor.stop();
+}
+void setVelocity(){
+    int axisHor = Controller1.Axis4.value();
+    int axisVert = Controller1.Axis3.value();
+    if(axisHor != abs(axisHor)){//if the stick is pushed left to turn left
+        RMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
+        int leftVelocity = (axisVert+axisHor);
+        if(leftVelocity < -100){
+            int leftVelocity = -100;
+        }
+        LMotor.spin(directionType::fwd,leftVelocity,percentUnits::pct);
+        }
+    else{//stick is pushed right or in the horizontal center
+        LMotor.spin(directionType::fwd,axisVert,percentUnits::pct);
+        int leftVelocity = (axisVert+axisHor);
+        if(leftVelocity > 100){
+            int leftVelocity = 100;
+            }
+        LMotor.spin(directionType::fwd,leftVelocity,percentUnits::pct);
+    }
+}
+int main() {
+    while(true){
+        Brain.Screen.print(Brain.Battery.capacity(percentUnits::pct));
+        Controller1.Axis3.changed(setVelocity);
+        Controller1.Axis2.changed(setVelocity);
+        if(Controller1.ButtonDown.pressing()){//does a 180 degree turn
+            stopMotors();
+            LMotor.rotateTo(1,rotationUnits::rev,100,velocityUnits::pct);
+            RMotor.rotateTo(-1,rotationUnits::rev,100,velocityUnits::pct);
+            stopMotors();
+        }
+    }
+}

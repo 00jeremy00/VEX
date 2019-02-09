@@ -1,0 +1,31 @@
+#include "robot-config.h"
+void setVelocity(){
+    int axisVert = Controller1.Axis3.value();
+    int axisHor = Controller1.Axis4.value();
+    int axisJoin = axisVert+axisHor;
+    int axisSub = axisVert-axisHor;
+    if(axisHor == abs(axisHor)){
+        LMotor.spin(directionType::fwd,axisVert,velocityUnits::pct);
+        if(abs(axisJoin) < abs(axisVert) or abs(axisVert)/axisVert != abs(axisJoin)/axisJoin){
+            RMotor.spin(directionType::fwd,axisJoin,velocityUnits::pct);
+        }
+        else{
+            RMotor.spin(directionType::fwd,axisSub,velocityUnits::pct);
+        }
+    }
+    else{
+        RMotor.spin(directionType::fwd,axisVert,velocityUnits::pct);
+        if(abs(axisJoin)<abs(axisVert) or abs(axisVert)/axisVert != abs(axisJoin)/axisJoin){
+            LMotor.spin(directionType::fwd,axisJoin,velocityUnits::pct);
+        }
+        else{
+            LMotor.spin(directionType::fwd,axisSub,velocityUnits::pct);
+        }
+    }
+}
+int main() {
+    while(1){
+        Controller1.Axis3.changed(setVelocity);
+        Controller1.Axis4.changed(setVelocity);
+    }
+}
